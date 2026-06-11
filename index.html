@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mojo's World Cup Portfolio</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg-primary: #0a0e1a;
+    --bg-secondary: #111827;
+    --bg-card: #151c2e;
+    --bg-card-hover: #1a2238;
+    --border: #1e293b;
+    --text-primary: #f1f5f9;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+    --green: #22c55e;
+    --green-dim: #16a34a;
+    --green-glow: rgba(34, 197, 94, 0.15);
+    --green-glow-strong: rgba(34, 197, 94, 0.3);
+    --red: #ef4444;
+    --red-dim: #dc2626;
+    --red-glow: rgba(239, 68, 68, 0.15);
+    --red-glow-strong: rgba(239, 68, 68, 0.3);
+    --accent: #3b82f6;
+    --accent-dim: #2563eb;
+    --gold: #f59e0b;
+  }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 24px 16px 48px;
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    margin-bottom: 32px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .header h1 {
+    font-size: 1.75rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    background: linear-gradient(135deg, #f1f5f9 0%, #3b82f6 50%, #8b5cf6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 4px;
+  }
+
+  .header .subtitle {
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    font-weight: 400;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  /* Summary Cards */
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+
+  .summary-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 18px 16px;
+    text-align: center;
+    transition: all 0.3s ease;
+  }
+
+  .summary-card:hover {
+    background: var(--bg-card-hover);
+    transform: translateY(-2px);
+  }
+
+  .summary-card .label {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+
+  .summary-card .value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  .summary-card .sub {
+    font-size: 0.75rem;
+    margin-top: 4px;
+    font-weight: 500;
+  }
+
+  .profit { color: var(--green); }
+  .loss { color: var(--red); }
+  .neutral { color: var(--text-secondary); }
+
+  /* Position Cards */
+  .positions-title {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    font-weight: 600;
+    margin-bottom: 12px;
+    padding-left: 4px;
+  }
+
+  .position-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 18px 20px;
+    margin-bottom: 10px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .position-card::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    border-radius: 3px 0 0 3px;
+    transition: all 0.3s ease;
+  }
+
+  .position-card.profit-card::before { background: var(--green); }
+  .position-card.loss-card::before { background: var(--red); }
+
+  .position-card:hover {
+    background: var(--bg-card-hover);
+    transform: translateY(-1px);
+  }
+
+  .position-card.profit-card:hover {
+    box-shadow: 0 0 30px var(--green-glow), inset 0 0 30px var(--green-glow);
+  }
+
+  .position-card.loss-card:hover {
+    box-shadow: 0 0 30px var(--red-glow), inset 0 0 30px var(--red-glow);
+  }
+
+  .pos-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+
+  .pos-team {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .pos-team .flag {
+    font-size: 1.5rem;
+  }
+
+  .pos-team .name {
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+  .pos-team .shares {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-weight: 400;
+  }
+
+  .pos-roi {
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  .pos-roi .roi-label {
+    font-size: 0.65rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    display: block;
+    text-align: right;
+    margin-bottom: 2px;
+    color: var(--text-muted);
+  }
+
+  .pos-details {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+  }
+
+  .pos-stat {
+    text-align: center;
+  }
+
+  .pos-stat .stat-label {
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    font-weight: 500;
+    margin-bottom: 3px;
+  }
+
+  .pos-stat .stat-value {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  .pos-stat .stat-value.pnl-val {
+    font-weight: 700;
+  }
+
+  /* Wave Strategy */
+  .wave-section {
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+  }
+
+  .wave-title {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    font-weight: 600;
+    margin-bottom: 14px;
+    padding-left: 4px;
+  }
+
+  .wave-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+
+  .wave-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    text-align: center;
+    transition: all 0.3s ease;
+  }
+
+  .wave-card:hover {
+    background: var(--bg-card-hover);
+    transform: translateY(-2px);
+  }
+
+  .wave-card .wave-num {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+
+  .wave-card .wave-pct {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: var(--accent);
+    letter-spacing: -0.03em;
+  }
+
+  .wave-card .wave-target {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    margin-top: 6px;
+    line-height: 1.4;
+  }
+
+  .wave-card .wave-amount {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    font-weight: 600;
+    margin-top: 4px;
+  }
+
+  /* Footer */
+  .footer {
+    margin-top: 28px;
+    text-align: center;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+  }
+
+  .footer .updated {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+  }
+
+  .footer .refresh-bar {
+    width: 100%;
+    height: 2px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-top: 10px;
+  }
+
+  .footer .refresh-bar .fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent-dim));
+    border-radius: 2px;
+    width: 0%;
+    transition: width 1s linear;
+  }
+
+  .loading-spinner {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border: 2px solid var(--border);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    vertical-align: middle;
+    margin-right: 6px;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  @keyframes pulse-green {
+    0%, 100% { box-shadow: 0 0 0 0 var(--green-glow-strong); }
+    50% { box-shadow: 0 0 20px 4px var(--green-glow-strong); }
+  }
+
+  @keyframes pulse-red {
+    0%, 100% { box-shadow: 0 0 0 0 var(--red-glow-strong); }
+    50% { box-shadow: 0 0 20px 4px var(--red-glow-strong); }
+  }
+
+  .pulse-profit { animation: pulse-green 3s ease-in-out infinite; }
+  .pulse-loss { animation: pulse-red 3s ease-in-out infinite; }
+
+  /* Error state */
+  .error-banner {
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    border-radius: 10px;
+    padding: 12px 16px;
+    margin-bottom: 20px;
+    font-size: 0.8rem;
+    color: var(--red);
+    text-align: center;
+  }
+
+  /* Mobile responsive */
+  @media (max-width: 640px) {
+    .container { padding: 16px 12px 36px; }
+    .header h1 { font-size: 1.35rem; }
+    .summary-grid { gap: 8px; }
+    .summary-card { padding: 14px 10px; }
+    .summary-card .value { font-size: 1.2rem; }
+    .pos-details { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .wave-grid { grid-template-columns: 1fr; gap: 8px; }
+    .pos-header { flex-direction: row; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="header">
+    <h1>⚽ Mojo's World Cup Portfolio</h1>
+    <div class="subtitle">Hyperliquid Prediction Market Tracker</div>
+  </div>
+
+  <div id="error-banner" class="error-banner" style="display:none;"></div>
+
+  <div class="summary-grid">
+    <div class="summary-card">
+      <div class="label">Total Invested</div>
+      <div class="value neutral">$714.13</div>
+      <div class="sub neutral">6 positions</div>
+    </div>
+    <div class="summary-card">
+      <div class="label">Portfolio Value</div>
+      <div id="total-value" class="value neutral">—</div>
+      <div id="total-pnl-sub" class="sub neutral">loading…</div>
+    </div>
+    <div class="summary-card">
+      <div class="label">Total P&L</div>
+      <div id="total-pnl" class="value neutral">—</div>
+      <div id="total-roi" class="sub neutral">—</div>
+    </div>
+  </div>
+
+  <div class="positions-title">Positions</div>
+  <div id="positions-container">
+    <div style="text-align:center;padding:40px;color:var(--text-muted);">
+      <span class="loading-spinner"></span> Fetching live prices…
+    </div>
+  </div>
+
+  <div class="wave-section">
+    <div class="wave-title">Wave Exit Strategy</div>
+    <div class="wave-grid">
+      <div class="wave-card">
+        <div class="wave-num">Wave 1 — Conservative</div>
+        <div class="wave-pct">33%</div>
+        <div class="wave-target">Sell at +50% ROI</div>
+        <div class="wave-amount">~$235.66 invested</div>
+      </div>
+      <div class="wave-card">
+        <div class="wave-num">Wave 2 — Moderate</div>
+        <div class="wave-pct">33%</div>
+        <div class="wave-target">Sell at +100% ROI</div>
+        <div class="wave-amount">~$235.66 invested</div>
+      </div>
+      <div class="wave-card">
+        <div class="wave-num">Wave 3 — Moonbag</div>
+        <div class="wave-pct">34%</div>
+        <div class="wave-target">Let it ride 🚀</div>
+        <div class="wave-amount">~$242.80 invested</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div id="last-updated" class="updated">Loading…</div>
+    <div class="refresh-bar"><div id="refresh-fill" class="fill"></div></div>
+  </div>
+</div>
+
+<script>
+const PORTFOLIO = [
+  { team: 'Spain',       flag: '🇪🇸', shares: 1100, avgPrice: 0.17374, invested: 191.10, assetId: '#2120' },
+  { team: 'France',      flag: '🇫🇷', shares: 1000, avgPrice: 0.17000, invested: 170.00, assetId: '#1890' },
+  { team: 'Portugal',    flag: '🇵🇹', shares: 1125, avgPrice: 0.11703, invested: 131.65, assetId: '#2050' },
+  { team: 'Argentina',   flag: '🇦🇷', shares: 1000, avgPrice: 0.09294, invested: 92.93,  assetId: '#1730' },
+  { team: 'Brazil',      flag: '🇧🇷', shares: 1000, avgPrice: 0.08505, invested: 85.05,  assetId: '#1780' },
+  { team: 'Netherlands', flag: '🇳🇱', shares: 1000, avgPrice: 0.04340, invested: 43.40,  assetId: '#2000' },
+];
+
+const TOTAL_INVESTED = 714.13;
+let refreshTimer = null;
+let refreshStart = null;
+
+function formatUSD(val) {
+  const sign = val >= 0 ? '+' : '';
+  return sign + '$' + Math.abs(val).toFixed(2);
+}
+
+function formatPct(val) {
+  const sign = val >= 0 ? '+' : '';
+  return sign + val.toFixed(1) + '%';
+}
+
+function formatPrice(val) {
+  return '$' + val.toFixed(4);
+}
+
+function updateRefreshBar() {
+  if (!refreshStart) return;
+  const elapsed = (Date.now() - refreshStart) / 1000;
+  const pct = Math.min((elapsed / 60) * 100, 100);
+  document.getElementById('refresh-fill').style.width = pct + '%';
+  requestAnimationFrame(updateRefreshBar);
+}
+
+async function fetchPrices() {
+  try {
+    const resp = await fetch('https://api.hyperliquid.xyz/info', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ type: 'allMids' })
+    });
+
+    if (!resp.ok) throw new Error('API returned ' + resp.status);
+
+    const data = await resp.json();
+
+    // Parse prices — API returns strings
+    const positions = PORTFOLIO.map(p => {
+      const rawPrice = data[p.assetId];
+      const currentPrice = rawPrice ? parseFloat(rawPrice) : null;
+      return { ...p, currentPrice };
+    });
+
+    // Check if all prices loaded
+    const missing = positions.filter(p => p.currentPrice === null || isNaN(p.currentPrice));
+    if (missing.length > 0) {
+      const missingTeams = missing.map(p => p.team).join(', ');
+      document.getElementById('error-banner').style.display = 'block';
+      document.getElementById('error-banner').textContent =
+        '⚠️ Could not load prices for: ' + missingTeams + '. Showing last known data if available.';
+    } else {
+      document.getElementById('error-banner').style.display = 'none';
+    }
+
+    render(positions);
+  } catch (err) {
+    document.getElementById('error-banner').style.display = 'block';
+    document.getElementById('error-banner').textContent = '⚠️ Failed to fetch prices: ' + err.message;
+  }
+}
+
+function render(positions) {
+  let totalValue = 0;
+  let totalPnl = 0;
+
+  const container = document.getElementById('positions-container');
+  let html = '';
+
+  // Sort by ROI descending
+  const sorted = positions.map(p => {
+    const cp = p.currentPrice || 0;
+    const value = p.shares * cp;
+    const pnl = value - p.invested;
+    const roi = p.invested > 0 ? (pnl / p.invested) * 100 : 0;
+    return { ...p, currentValue: value, pnl, roi };
+  }).sort((a, b) => b.roi - a.roi);
+
+  sorted.forEach(p => {
+    totalValue += p.currentValue;
+    totalPnl += p.pnl;
+
+    const isProfit = p.pnl >= 0;
+    const colorClass = isProfit ? 'profit' : 'loss';
+    const cardClass = isProfit ? 'profit-card' : 'loss-card';
+    const pulseClass = isProfit ? 'pulse-profit' : 'pulse-loss';
+
+    html += `
+      <div class="position-card ${cardClass} ${pulseClass}">
+        <div class="pos-header">
+          <div class="pos-team">
+            <span class="flag">${p.flag}</span>
+            <div>
+              <div class="name">${p.team}</div>
+              <div class="shares">${p.shares.toLocaleString()} shares</div>
+            </div>
+          </div>
+          <div class="pos-roi ${colorClass}">
+            <span class="roi-label">ROI</span>
+            ${formatPct(p.roi)}
+          </div>
+        </div>
+        <div class="pos-details">
+          <div class="pos-stat">
+            <div class="stat-label">Avg Price</div>
+            <div class="stat-value">${formatPrice(p.avgPrice)}</div>
+          </div>
+          <div class="pos-stat">
+            <div class="stat-label">Current</div>
+            <div class="stat-value">${p.currentPrice !== null ? formatPrice(p.currentPrice) : '—'}</div>
+          </div>
+          <div class="pos-stat">
+            <div class="stat-label">Value</div>
+            <div class="stat-value">$${p.currentValue.toFixed(2)}</div>
+          </div>
+          <div class="pos-stat">
+            <div class="stat-label">P&L</div>
+            <div class="stat-value pnl-val ${colorClass}">${formatUSD(p.pnl)}</div>
+          </div>
+        </div>
+      </div>
+    `;
+  });
+
+  container.innerHTML = html;
+
+  // Update summary
+  const totalRoi = TOTAL_INVESTED > 0 ? (totalPnl / TOTAL_INVESTED) * 100 : 0;
+  const isTotalProfit = totalPnl >= 0;
+  const totalColor = isTotalProfit ? 'profit' : 'loss';
+
+  document.getElementById('total-value').textContent = '$' + totalValue.toFixed(2);
+  document.getElementById('total-value').className = 'value ' + totalColor;
+  document.getElementById('total-pnl-sub').textContent = formatPct(totalRoi) + ' return';
+  document.getElementById('total-pnl-sub').className = 'sub ' + totalColor;
+
+  document.getElementById('total-pnl').textContent = formatUSD(totalPnl);
+  document.getElementById('total-pnl').className = 'value ' + totalColor;
+  document.getElementById('total-roi').textContent = formatPct(totalRoi);
+  document.getElementById('total-roi').className = 'sub ' + totalColor;
+
+  // Timestamp
+  const now = new Date();
+  document.getElementById('last-updated').textContent =
+    'Last updated: ' + now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })
+    + ' · Auto-refreshes every 60s';
+}
+
+// Initial fetch
+fetchPrices();
+
+// Refresh every 60 seconds with progress bar
+refreshStart = Date.now();
+updateRefreshBar();
+setInterval(() => {
+  fetchPrices();
+  refreshStart = Date.now();
+}, 60000);
+</script>
+
+</body>
+</html>
