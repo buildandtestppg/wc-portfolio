@@ -72,10 +72,22 @@
     text-transform: uppercase;
   }
 
+  .countdown {
+    margin-top: 10px;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    font-weight: 600;
+  }
+
+  .countdown span {
+    color: var(--accent);
+    font-weight: 700;
+  }
+
   /* Summary Cards */
   .summary-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: 12px;
     margin-bottom: 28px;
   }
@@ -84,7 +96,7 @@
     background: var(--bg-card);
     border: 1px solid var(--border);
     border-radius: 14px;
-    padding: 18px 16px;
+    padding: 18px 14px;
     text-align: center;
     transition: all 0.3s ease;
   }
@@ -104,7 +116,7 @@
   }
 
   .summary-card .value {
-    font-size: 1.5rem;
+    font-size: 1.45rem;
     font-weight: 700;
     letter-spacing: -0.02em;
   }
@@ -115,9 +127,25 @@
     font-weight: 500;
   }
 
+  .health-bar {
+    width: 100%;
+    height: 6px;
+    background: var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-top: 10px;
+  }
+
+  .health-bar .fill {
+    height: 100%;
+    border-radius: 3px;
+    transition: width 0.6s ease;
+  }
+
   .profit { color: var(--green); }
   .loss { color: var(--red); }
   .neutral { color: var(--text-secondary); }
+  .warning { color: var(--gold); }
 
   /* Position Cards */
   .positions-title {
@@ -173,6 +201,8 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 12px;
+    flex-wrap: wrap;
+    gap: 8px;
   }
 
   .pos-team {
@@ -197,6 +227,26 @@
     font-weight: 400;
   }
 
+  .pos-header-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .sell-badge {
+    background: rgba(239, 68, 68, 0.15);
+    color: var(--red);
+    border: 1px solid rgba(239, 68, 68, 0.4);
+    font-size: 0.65rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 4px 8px;
+    border-radius: 8px;
+    animation: pulse-red 2s ease-in-out infinite;
+    white-space: nowrap;
+  }
+
   .pos-roi {
     font-size: 1.1rem;
     font-weight: 700;
@@ -216,7 +266,7 @@
 
   .pos-details {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     gap: 8px;
   }
 
@@ -241,6 +291,62 @@
 
   .pos-stat .stat-value.pnl-val {
     font-weight: 700;
+  }
+
+  /* Target track / sparkline */
+  .target-section {
+    margin-top: 14px;
+  }
+
+  .target-labels-top {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .target-track {
+    position: relative;
+    height: 8px;
+    background: linear-gradient(90deg, var(--red-dim) 0%, var(--text-muted) 50%, var(--green-dim) 100%);
+    border-radius: 4px;
+    margin-bottom: 6px;
+  }
+
+  .target-fill {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.12);
+    border-radius: 4px 0 0 4px;
+    width: 0%;
+    transition: width 0.6s ease;
+  }
+
+  .target-dot {
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--text-primary);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
+    left: 0%;
+    transition: left 0.6s ease;
+  }
+
+  .target-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    font-weight: 500;
   }
 
   /* Wave Strategy */
@@ -310,6 +416,33 @@
     margin-top: 4px;
   }
 
+  .wave-teams {
+    margin-top: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 5px;
+  }
+
+  .wave-team {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border);
+    padding: 4px 7px;
+    border-radius: 8px;
+    font-size: 0.7rem;
+    color: var(--text-secondary);
+    font-weight: 600;
+  }
+
+  .wave-empty {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    margin-top: 10px;
+  }
+
   /* Footer */
   .footer {
     margin-top: 28px;
@@ -370,6 +503,20 @@
   .pulse-profit { animation: pulse-green 3s ease-in-out infinite; }
   .pulse-loss { animation: pulse-red 3s ease-in-out infinite; }
 
+  /* Flash animations */
+  @keyframes flashGreen {
+    0% { background: rgba(34, 197, 94, 0.35); }
+    100% { background: transparent; }
+  }
+
+  @keyframes flashRed {
+    0% { background: rgba(239, 68, 68, 0.35); }
+    100% { background: transparent; }
+  }
+
+  .flash-up { animation: flashGreen 0.9s ease-out; }
+  .flash-down { animation: flashRed 0.9s ease-out; }
+
   /* Error state */
   .error-banner {
     background: rgba(239, 68, 68, 0.1);
@@ -386,12 +533,13 @@
   @media (max-width: 640px) {
     .container { padding: 16px 12px 36px; }
     .header h1 { font-size: 1.35rem; }
-    .summary-grid { gap: 8px; }
+    .summary-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
     .summary-card { padding: 14px 10px; }
     .summary-card .value { font-size: 1.2rem; }
     .pos-details { grid-template-columns: repeat(2, 1fr); gap: 10px; }
     .wave-grid { grid-template-columns: 1fr; gap: 8px; }
-    .pos-header { flex-direction: row; }
+    .pos-header { flex-direction: column; align-items: flex-start; }
+    .pos-header-right { width: 100%; justify-content: space-between; }
   }
 </style>
 </head>
@@ -401,6 +549,7 @@
   <div class="header">
     <h1>⚽ Mojo's World Cup Portfolio</h1>
     <div class="subtitle">Hyperliquid Prediction Market Tracker</div>
+    <div class="countdown">World Cup 2026 kicks off in <span id="countdown">—</span></div>
   </div>
 
   <div id="error-banner" class="error-banner" style="display:none;"></div>
@@ -421,6 +570,12 @@
       <div id="total-pnl" class="value neutral">—</div>
       <div id="total-roi" class="sub neutral">—</div>
     </div>
+    <div class="summary-card">
+      <div class="label">Health Score</div>
+      <div id="health-score" class="value neutral">—</div>
+      <div class="health-bar"><div id="health-fill" class="fill" style="width:0%"></div></div>
+      <div id="health-sub" class="sub neutral">loading…</div>
+    </div>
   </div>
 
   <div class="positions-title">Positions</div>
@@ -431,8 +586,8 @@
   </div>
 
   <div class="wave-section">
-    <div class="wave-title">Wave Exit Strategy</div>
-    <div class="wave-grid">
+    <div class="wave-title">Wave Exit Strategy — Live Progress</div>
+    <div id="wave-grid" class="wave-grid">
       <div class="wave-card">
         <div class="wave-num">Wave 1 — Conservative</div>
         <div class="wave-pct">33%</div>
@@ -471,8 +626,15 @@ const PORTFOLIO = [
 ];
 
 const TOTAL_INVESTED = 714.13;
+const TOURNAMENT_DATE = new Date('2026-06-11T00:00:00Z');
+const STORAGE_KEY = 'mojo_wc_prices';
+const REFRESH_INTERVAL = 60000;
+
 let refreshTimer = null;
 let refreshStart = null;
+let currentPrices = {};
+let prevPrices = {};
+let lastUpdatedTime = null;
 
 function formatUSD(val) {
   const sign = val >= 0 ? '+' : '';
@@ -488,12 +650,244 @@ function formatPrice(val) {
   return '$' + val.toFixed(4);
 }
 
+function showError(msg) {
+  const el = document.getElementById('error-banner');
+  el.style.display = 'block';
+  el.textContent = '⚠️ ' + msg;
+}
+
+function hideError() {
+  document.getElementById('error-banner').style.display = 'none';
+}
+
+function savePrices(prices) {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ prices, timestamp: Date.now() }));
+  } catch (e) {}
+}
+
+function loadStoredPrices() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw);
+    if (!parsed.prices || Date.now() - parsed.timestamp > 24 * 60 * 60 * 1000) return null;
+    lastUpdatedTime = parsed.timestamp;
+    return parsed.prices;
+  } catch (e) {
+    return null;
+  }
+}
+
+function getFlashClass(assetId, price) {
+  if (price === null || price === undefined) return '';
+  const prev = prevPrices[assetId];
+  if (prev === undefined || prev === null || prev === price) return '';
+  return price > prev ? 'flash-up' : 'flash-down';
+}
+
 function updateRefreshBar() {
   if (!refreshStart) return;
   const elapsed = (Date.now() - refreshStart) / 1000;
-  const pct = Math.min((elapsed / 60) * 100, 100);
+  const pct = Math.min((elapsed / (REFRESH_INTERVAL / 1000)) * 100, 100);
   document.getElementById('refresh-fill').style.width = pct + '%';
   requestAnimationFrame(updateRefreshBar);
+}
+
+function updateTimestamp() {
+  const now = lastUpdatedTime ? new Date(lastUpdatedTime) : new Date();
+  document.getElementById('last-updated').textContent =
+    'Last updated: ' + now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })
+    + ' · Auto-refreshes every 60s';
+}
+
+function updateCountdown() {
+  const diff = TOURNAMENT_DATE - Date.now();
+  const el = document.getElementById('countdown');
+  if (diff <= 0) {
+    el.textContent = 'Tournament is live!';
+    return;
+  }
+  const days = Math.floor(diff / 86400000);
+  const hours = Math.floor((diff % 86400000) / 3600000);
+  const mins = Math.floor((diff % 3600000) / 60000);
+  const secs = Math.floor((diff % 60000) / 1000);
+  el.textContent = `${days}d ${hours}h ${mins}m ${secs}s`;
+}
+
+function healthColor(score) {
+  if (score >= 70) return 'profit';
+  if (score >= 40) return 'warning';
+  return 'loss';
+}
+
+function renderWaves(positions) {
+  const wave1 = positions.filter(p => p.roi >= 50).sort((a, b) => b.roi - a.roi);
+  const wave2 = positions.filter(p => p.roi >= 100).sort((a, b) => b.roi - a.roi);
+  const wave3 = positions.filter(p => p.roi < 50).sort((a, b) => b.roi - a.roi);
+
+  const makeList = (arr) => {
+    if (!arr.length) return '<div class="wave-empty">No positions triggered yet</div>';
+    return '<div class="wave-teams">' +
+      arr.map(p => `<span class="wave-team">${p.flag} ${p.team} ${formatPct(p.roi)}</span>`).join('') +
+      '</div>';
+  };
+
+  document.getElementById('wave-grid').innerHTML = `
+    <div class="wave-card">
+      ${wave1.length ? '<div class="sell-badge" style="margin:0 auto 8px;">ACTIVE</div>' : ''}
+      <div class="wave-num">Wave 1 — Conservative</div>
+      <div class="wave-pct">${wave1.length}</div>
+      <div class="wave-target">positions at +50% ROI</div>
+      <div class="wave-amount">~$235.66 invested</div>
+      ${makeList(wave1)}
+    </div>
+    <div class="wave-card">
+      ${wave2.length ? '<div class="sell-badge" style="margin:0 auto 8px;">ACTIVE</div>' : ''}
+      <div class="wave-num">Wave 2 — Moderate</div>
+      <div class="wave-pct">${wave2.length}</div>
+      <div class="wave-target">positions at +100% ROI</div>
+      <div class="wave-amount">~$235.66 invested</div>
+      ${makeList(wave2)}
+    </div>
+    <div class="wave-card">
+      <div class="wave-num">Wave 3 — Moonbag</div>
+      <div class="wave-pct">${wave3.length}</div>
+      <div class="wave-target">positions still holding full</div>
+      <div class="wave-amount">~$242.80 invested</div>
+      ${makeList(wave3)}
+    </div>
+  `;
+}
+
+function render(positions) {
+  let totalValue = 0;
+  let totalPnl = 0;
+  let profitable = 0;
+  let sumRoi = 0;
+  let counted = 0;
+
+  const enriched = positions.map(p => {
+    const hasPrice = p.currentPrice !== null && !isNaN(p.currentPrice);
+    const cp = hasPrice ? p.currentPrice : 0;
+    const value = hasPrice ? p.shares * cp : 0;
+    const pnl = hasPrice ? value - p.invested : -p.invested;
+    const roi = p.invested > 0 && hasPrice ? (pnl / p.invested) * 100 : -100;
+    const exitPrice = p.avgPrice * 1.5;
+    const progress = exitPrice > p.avgPrice ? ((cp - p.avgPrice) / (exitPrice - p.avgPrice)) * 100 : 0;
+    return { ...p, hasPrice, currentValue: value, pnl, roi, exitPrice, progress };
+  }).sort((a, b) => b.roi - a.roi);
+
+  enriched.forEach(p => {
+    if (p.hasPrice) {
+      totalValue += p.currentValue;
+      totalPnl += p.pnl;
+      sumRoi += p.roi;
+      counted++;
+      if (p.pnl > 0) profitable++;
+    }
+  });
+
+  const avgRoi = counted > 0 ? sumRoi / counted : 0;
+  const profitableRatio = counted > 0 ? profitable / counted : 0;
+  const healthScore = Math.round(
+    profitableRatio * 50 + Math.min(Math.max((avgRoi + 50) / 100, 0), 1) * 50
+  );
+  const healthClass = healthColor(healthScore);
+
+  document.getElementById('total-value').textContent = '$' + totalValue.toFixed(2);
+  document.getElementById('total-value').className = 'value ' + (totalPnl >= 0 ? 'profit' : 'loss');
+  document.getElementById('total-pnl-sub').textContent = formatPct(counted > 0 ? (totalPnl / TOTAL_INVESTED) * 100 : 0) + ' return';
+  document.getElementById('total-pnl-sub').className = 'sub ' + (totalPnl >= 0 ? 'profit' : 'loss');
+
+  document.getElementById('total-pnl').textContent = formatUSD(totalPnl);
+  document.getElementById('total-pnl').className = 'value ' + (totalPnl >= 0 ? 'profit' : 'loss');
+  document.getElementById('total-roi').textContent = formatPct(counted > 0 ? (totalPnl / TOTAL_INVESTED) * 100 : 0);
+  document.getElementById('total-roi').className = 'sub ' + (totalPnl >= 0 ? 'profit' : 'loss');
+
+  document.getElementById('health-score').textContent = healthScore;
+  document.getElementById('health-score').className = 'value ' + healthClass;
+  document.getElementById('health-fill').style.width = healthScore + '%';
+  document.getElementById('health-fill').style.background =
+    healthScore >= 70 ? 'var(--green)' : healthScore >= 40 ? 'var(--gold)' : 'var(--red)';
+  document.getElementById('health-sub').textContent =
+    counted > 0 ? `${profitable}/${counted} profitable · Avg ROI ${formatPct(avgRoi)}` : 'No price data';
+  document.getElementById('health-sub').className = 'sub ' + healthClass;
+
+  const container = document.getElementById('positions-container');
+  let html = '';
+
+  enriched.forEach(p => {
+    const isProfit = p.pnl >= 0;
+    const colorClass = isProfit ? 'profit' : 'loss';
+    const cardClass = isProfit ? 'profit-card' : 'loss-card';
+    const pulseClass = isProfit ? 'pulse-profit' : 'pulse-loss';
+    const sellSignal = p.roi >= 50;
+    const flashClass = getFlashClass(p.assetId, p.currentPrice);
+    const progressPct = Math.max(0, Math.min(100, p.progress));
+    const dotLeft = Math.max(0, Math.min(100, p.progress));
+
+    html += `
+      <div class="position-card ${cardClass} ${pulseClass}">
+        <div class="pos-header">
+          <div class="pos-team">
+            <span class="flag">${p.flag}</span>
+            <div>
+              <div class="name">${p.team}</div>
+              <div class="shares">${p.shares.toLocaleString()} shares</div>
+            </div>
+          </div>
+          <div class="pos-header-right">
+            ${sellSignal ? '<div class="sell-badge">🚨 Sell Signal</div>' : ''}
+            <div class="pos-roi ${colorClass}">
+              <span class="roi-label">ROI</span>
+              ${formatPct(p.roi)}
+            </div>
+          </div>
+        </div>
+        <div class="pos-details">
+          <div class="pos-stat">
+            <div class="stat-label">Avg Price</div>
+            <div class="stat-value">${formatPrice(p.avgPrice)}</div>
+          </div>
+          <div class="pos-stat">
+            <div class="stat-label">Current</div>
+            <div class="stat-value ${flashClass}">${p.hasPrice ? formatPrice(p.currentPrice) : '—'}</div>
+          </div>
+          <div class="pos-stat">
+            <div class="stat-label">Exit Target</div>
+            <div class="stat-value">${formatPrice(p.exitPrice)}</div>
+          </div>
+          <div class="pos-stat">
+            <div class="stat-label">Value</div>
+            <div class="stat-value">${p.hasPrice ? '$' + p.currentValue.toFixed(2) : '—'}</div>
+          </div>
+          <div class="pos-stat">
+            <div class="stat-label">P&L</div>
+            <div class="stat-value pnl-val ${colorClass}">${p.hasPrice ? formatUSD(p.pnl) : '—'}</div>
+          </div>
+        </div>
+        <div class="target-section">
+          <div class="target-labels-top">
+            <span>Wave 1 Progress</span>
+            <span>${progressPct.toFixed(1)}% to target</span>
+          </div>
+          <div class="target-track">
+            <div class="target-fill" style="width:${progressPct}%"></div>
+            <div class="target-dot" style="left:${dotLeft}%"></div>
+          </div>
+          <div class="target-labels">
+            <span>Buy ${formatPrice(p.avgPrice)}</span>
+            <span>${p.hasPrice ? formatPrice(p.currentPrice) + ' (' + formatPct(p.roi) + ')' : '—'}</span>
+            <span>Target ${formatPrice(p.exitPrice)}</span>
+          </div>
+        </div>
+      </div>
+    `;
+  });
+
+  container.innerHTML = html;
+  renderWaves(enriched);
 }
 
 async function fetchPrices() {
@@ -508,127 +902,65 @@ async function fetchPrices() {
 
     const data = await resp.json();
 
-    // Parse prices — API returns strings
+    const newPrices = {};
     const positions = PORTFOLIO.map(p => {
       const rawPrice = data[p.assetId];
       const currentPrice = rawPrice ? parseFloat(rawPrice) : null;
+      if (currentPrice !== null && !isNaN(currentPrice)) newPrices[p.assetId] = currentPrice;
       return { ...p, currentPrice };
     });
 
-    // Check if all prices loaded
     const missing = positions.filter(p => p.currentPrice === null || isNaN(p.currentPrice));
     if (missing.length > 0) {
-      const missingTeams = missing.map(p => p.team).join(', ');
-      document.getElementById('error-banner').style.display = 'block';
-      document.getElementById('error-banner').textContent =
-        '⚠️ Could not load prices for: ' + missingTeams + '. Showing last known data if available.';
+      showError('Could not load prices for: ' + missing.map(p => p.team).join(', ') + '. Using last known data where available.');
     } else {
-      document.getElementById('error-banner').style.display = 'none';
+      hideError();
+    }
+
+    if (Object.keys(newPrices).length > 0) {
+      savePrices(newPrices);
+      prevPrices = { ...currentPrices };
+      currentPrices = newPrices;
+      lastUpdatedTime = Date.now();
     }
 
     render(positions);
   } catch (err) {
-    document.getElementById('error-banner').style.display = 'block';
-    document.getElementById('error-banner').textContent = '⚠️ Failed to fetch prices: ' + err.message;
+    showError('Failed to fetch live prices. Showing last known data if available.');
+    const stored = loadStoredPrices();
+    if (stored && Object.keys(stored).length > 0) {
+      prevPrices = { ...currentPrices };
+      currentPrices = stored;
+      render(PORTFOLIO.map(p => ({ ...p, currentPrice: stored[p.assetId] || null })));
+    } else if (Object.keys(currentPrices).length > 0) {
+      render(PORTFOLIO.map(p => ({ ...p, currentPrice: currentPrices[p.assetId] || null })));
+    }
   }
+  updateTimestamp();
 }
 
-function render(positions) {
-  let totalValue = 0;
-  let totalPnl = 0;
+function init() {
+  const stored = loadStoredPrices();
+  if (stored && Object.keys(stored).length > 0) {
+    currentPrices = stored;
+    render(PORTFOLIO.map(p => ({ ...p, currentPrice: stored[p.assetId] || null })));
+  }
 
-  const container = document.getElementById('positions-container');
-  let html = '';
-
-  // Sort by ROI descending
-  const sorted = positions.map(p => {
-    const cp = p.currentPrice || 0;
-    const value = p.shares * cp;
-    const pnl = value - p.invested;
-    const roi = p.invested > 0 ? (pnl / p.invested) * 100 : 0;
-    return { ...p, currentValue: value, pnl, roi };
-  }).sort((a, b) => b.roi - a.roi);
-
-  sorted.forEach(p => {
-    totalValue += p.currentValue;
-    totalPnl += p.pnl;
-
-    const isProfit = p.pnl >= 0;
-    const colorClass = isProfit ? 'profit' : 'loss';
-    const cardClass = isProfit ? 'profit-card' : 'loss-card';
-    const pulseClass = isProfit ? 'pulse-profit' : 'pulse-loss';
-
-    html += `
-      <div class="position-card ${cardClass} ${pulseClass}">
-        <div class="pos-header">
-          <div class="pos-team">
-            <span class="flag">${p.flag}</span>
-            <div>
-              <div class="name">${p.team}</div>
-              <div class="shares">${p.shares.toLocaleString()} shares</div>
-            </div>
-          </div>
-          <div class="pos-roi ${colorClass}">
-            <span class="roi-label">ROI</span>
-            ${formatPct(p.roi)}
-          </div>
-        </div>
-        <div class="pos-details">
-          <div class="pos-stat">
-            <div class="stat-label">Avg Price</div>
-            <div class="stat-value">${formatPrice(p.avgPrice)}</div>
-          </div>
-          <div class="pos-stat">
-            <div class="stat-label">Current</div>
-            <div class="stat-value">${p.currentPrice !== null ? formatPrice(p.currentPrice) : '—'}</div>
-          </div>
-          <div class="pos-stat">
-            <div class="stat-label">Value</div>
-            <div class="stat-value">$${p.currentValue.toFixed(2)}</div>
-          </div>
-          <div class="pos-stat">
-            <div class="stat-label">P&L</div>
-            <div class="stat-value pnl-val ${colorClass}">${formatUSD(p.pnl)}</div>
-          </div>
-        </div>
-      </div>
-    `;
-  });
-
-  container.innerHTML = html;
-
-  // Update summary
-  const totalRoi = TOTAL_INVESTED > 0 ? (totalPnl / TOTAL_INVESTED) * 100 : 0;
-  const isTotalProfit = totalPnl >= 0;
-  const totalColor = isTotalProfit ? 'profit' : 'loss';
-
-  document.getElementById('total-value').textContent = '$' + totalValue.toFixed(2);
-  document.getElementById('total-value').className = 'value ' + totalColor;
-  document.getElementById('total-pnl-sub').textContent = formatPct(totalRoi) + ' return';
-  document.getElementById('total-pnl-sub').className = 'sub ' + totalColor;
-
-  document.getElementById('total-pnl').textContent = formatUSD(totalPnl);
-  document.getElementById('total-pnl').className = 'value ' + totalColor;
-  document.getElementById('total-roi').textContent = formatPct(totalRoi);
-  document.getElementById('total-roi').className = 'sub ' + totalColor;
-
-  // Timestamp
-  const now = new Date();
-  document.getElementById('last-updated').textContent =
-    'Last updated: ' + now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })
-    + ' · Auto-refreshes every 60s';
-}
-
-// Initial fetch
-fetchPrices();
-
-// Refresh every 60 seconds with progress bar
-refreshStart = Date.now();
-updateRefreshBar();
-setInterval(() => {
   fetchPrices();
+
   refreshStart = Date.now();
-}, 60000);
+  updateRefreshBar();
+
+  setInterval(() => {
+    fetchPrices();
+    refreshStart = Date.now();
+  }, REFRESH_INTERVAL);
+
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+}
+
+init();
 </script>
 
 </body>
