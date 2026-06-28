@@ -549,7 +549,7 @@
   <div class="header">
     <h1>⚽ Mojo's World Cup Portfolio</h1>
     <div class="subtitle">Hyperliquid Prediction Market Tracker</div>
-    <div class="countdown">World Cup 2026 kicks off in <span id="countdown">—</span></div>
+    <div class="countdown"><span id="countdown-prefix">World Cup 2026 kicks off in </span><span id="countdown">—</span></div>
   </div>
 
   <div id="error-banner" class="error-banner" style="display:none;"></div>
@@ -590,21 +590,21 @@
     <div id="wave-grid" class="wave-grid">
       <div class="wave-card">
         <div class="wave-num">Wave 1 — Conservative</div>
-        <div class="wave-pct">33%</div>
+        <div class="wave-pct">—</div>
         <div class="wave-target">Sell at +50% ROI</div>
-        <div class="wave-amount">~$235.66 invested</div>
+        <div class="wave-amount">loading…</div>
       </div>
       <div class="wave-card">
         <div class="wave-num">Wave 2 — Moderate</div>
-        <div class="wave-pct">33%</div>
+        <div class="wave-pct">—</div>
         <div class="wave-target">Sell at +100% ROI</div>
-        <div class="wave-amount">~$235.66 invested</div>
+        <div class="wave-amount">loading…</div>
       </div>
       <div class="wave-card">
         <div class="wave-num">Wave 3 — Moonbag</div>
-        <div class="wave-pct">34%</div>
+        <div class="wave-pct">—</div>
         <div class="wave-target">Let it ride 🚀</div>
-        <div class="wave-amount">~$242.80 invested</div>
+        <div class="wave-amount">loading…</div>
       </div>
     </div>
   </div>
@@ -637,8 +637,8 @@ let prevPrices = {};
 let lastUpdatedTime = null;
 
 function formatUSD(val) {
-  const sign = val >= 0 ? '+' : '';
-  return sign + '$' + Math.abs(val).toFixed(2);
+  if (val >= 0) return '+$' + val.toFixed(2);
+  return '-$' + Math.abs(val).toFixed(2);
 }
 
 function formatPct(val) {
@@ -704,10 +704,13 @@ function updateTimestamp() {
 function updateCountdown() {
   const diff = TOURNAMENT_DATE - Date.now();
   const el = document.getElementById('countdown');
+  const prefix = document.getElementById('countdown-prefix');
   if (diff <= 0) {
-    el.textContent = 'Tournament is live!';
+    el.textContent = '🏆 Tournament is live!';
+    if (prefix) prefix.textContent = '';
     return;
   }
+  if (prefix) prefix.textContent = 'World Cup 2026 kicks off in ';
   const days = Math.floor(diff / 86400000);
   const hours = Math.floor((diff % 86400000) / 3600000);
   const mins = Math.floor((diff % 3600000) / 60000);
@@ -726,6 +729,10 @@ function renderWaves(positions) {
   const wave2 = positions.filter(p => p.roi >= 100).sort((a, b) => b.roi - a.roi);
   const wave3 = positions.filter(p => p.roi < 50).sort((a, b) => b.roi - a.roi);
 
+  const wave1Value = wave1.reduce((s, p) => s + p.currentValue, 0);
+  const wave2Value = wave2.reduce((s, p) => s + p.currentValue, 0);
+  const wave3Value = wave3.reduce((s, p) => s + p.currentValue, 0);
+
   const makeList = (arr) => {
     if (!arr.length) return '<div class="wave-empty">No positions triggered yet</div>';
     return '<div class="wave-teams">' +
@@ -739,7 +746,7 @@ function renderWaves(positions) {
       <div class="wave-num">Wave 1 — Conservative</div>
       <div class="wave-pct">${wave1.length}</div>
       <div class="wave-target">positions at +50% ROI</div>
-      <div class="wave-amount">~$235.66 invested</div>
+      <div class="wave-amount">${wave1.length ? '~$' + wave1Value.toFixed(0) + ' current value' : '~$0'}</div>
       ${makeList(wave1)}
     </div>
     <div class="wave-card">
@@ -747,14 +754,14 @@ function renderWaves(positions) {
       <div class="wave-num">Wave 2 — Moderate</div>
       <div class="wave-pct">${wave2.length}</div>
       <div class="wave-target">positions at +100% ROI</div>
-      <div class="wave-amount">~$235.66 invested</div>
+      <div class="wave-amount">${wave2.length ? '~$' + wave2Value.toFixed(0) + ' current value' : '~$0'}</div>
       ${makeList(wave2)}
     </div>
     <div class="wave-card">
       <div class="wave-num">Wave 3 — Moonbag</div>
       <div class="wave-pct">${wave3.length}</div>
       <div class="wave-target">positions still holding full</div>
-      <div class="wave-amount">~$242.80 invested</div>
+      <div class="wave-amount">~$${wave3Value.toFixed(0)} current value</div>
       ${makeList(wave3)}
     </div>
   `;
